@@ -1,10 +1,12 @@
 package com.example.demo.payload;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.util.Set;
+
+//@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDTO {
@@ -12,5 +14,6 @@ public class PostDTO {
     private String title;
     private String description;
     private String content;
+    private Set<CommentDTO> comments;
 
 }

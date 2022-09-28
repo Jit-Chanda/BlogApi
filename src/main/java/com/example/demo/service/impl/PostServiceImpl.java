@@ -6,6 +6,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.payload.PostResponse;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +22,14 @@ public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
 
+    private ModelMapper mapper;
+
+    //Constructor injection
     @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper)
+    {
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -94,21 +100,28 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(id);
     }
 
+    //convert entity to DTO
     private PostDTO mapToDTO(Post post) {
-        //convert entity to DTO
-        PostDTO response = new PostDTO();
-        response.setId(post.getId());
-        response.setTitle(post.getTitle());
-        response.setDescription(post.getDescription());
-        response.setContent(post.getContent());
+        //entity to DTO mapping using model mapper
+        PostDTO response = mapper.map(post, PostDTO.class);
+        //manually doing the entity to DTO mapping
+//        PostDTO response = new PostDTO();
+//        response.setId(post.getId());
+//        response.setTitle(post.getTitle());
+//        response.setDescription(post.getDescription());
+//        response.setContent(post.getContent());
         return response;
     }
+
+    //convert DTO to entity
     private Post mapToEntity(PostDTO postDTO) {
-        //convert DTO to entity
-        Post response = new Post();
-        response.setContent(postDTO.getContent());
-        response.setDescription(postDTO.getDescription());
-        response.setTitle(postDTO.getTitle());
+        //entity to DTO mapping using model mapper
+        Post response = mapper.map(postDTO, Post.class);
+        //manually doing the DTO to entity mapping
+//        Post response = new Post();
+//        response.setContent(postDTO.getContent());
+//        response.setDescription(postDTO.getDescription());
+//        response.setTitle(postDTO.getTitle());
         return response;
     }
 }

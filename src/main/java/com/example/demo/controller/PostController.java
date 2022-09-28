@@ -41,9 +41,9 @@ public class PostController {
 
     //get a specific blog post
     @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getPost(@PathVariable long id) {
+    public PostDTO getPost(@PathVariable long id) {
         PostDTO post = postService.getPost(id);
-        return new ResponseEntity<>(post, HttpStatus.OK);
+        return post;
     }
 
     //update a specific blog post
